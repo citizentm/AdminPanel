@@ -1,0 +1,103 @@
+.gg-euro {
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 14px;
+  height: 14px;
+  border: 2px solid;
+  box-sizing: border-box;
+  border-radius: 100px;
+  border-right-color: transparent;
+}
+.gg-euro::after {
+  content: '';
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  transform: skewX(-20deg);
+  left: -4px;
+  top: 3px;
+}
+
+.gg-calendar-today {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 18px;
+  height: 18px;
+  border: 2px solid;
+  border-top: 4px solid;
+  border-radius: 3px;
+}
+.gg-calendar-today::before {
+  content: '';
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  background: currentColor;
+  height: 4px;
+  width: 4px;
+  border-radius: 2px;
+  right: 2px;
+  bottom: 2px;
+}
+
+.gg-check {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 22px;
+  height: 22px;
+  border: 2px solid transparent;
+  border-radius: 100px;
+}
+.gg-check::after {
+  content: '';
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  left: 3px;
+  top: -1px;
+  width: 6px;
+  height: 10px;
+  border-width: 0 2px 2px 0;
+  border-style: solid;
+  transform-origin: bottom left;
+  transform: rotate(45deg);
+}
+
+.gg-danger {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 20px;
+  height: 20px;
+  border: 2px solid;
+  border-radius: 40px;
+}
+.gg-danger::after,
+.gg-danger::before {
+  content: '';
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  border-radius: 3px;
+  width: 2px;
+  background: currentColor;
+  left: 7px;
+}
+.gg-danger::after {
+  top: 2px;
+  height: 8px;
+}
+.gg-danger::before {
+  height: 2px;
+  bottom: 2px;
+}

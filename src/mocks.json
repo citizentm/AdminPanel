@@ -1,0 +1,72 @@
+{
+  "series": [
+    {
+      "title": "Projects for 2021",
+      "budget": 10000000,
+      "deadline": "2020-11-14",
+      "projects": [
+        {
+          "title": "New playground for kids",
+          "description": "Playground stuff",
+          "budget": 200000,
+          "votes": 200
+        },
+        {
+          "title": "Fix roads",
+          "description": "Roaddsssss",
+          "budget": 1500000,
+          "votes": 1267
+        }
+      ]
+    },
+    {
+      "title": "Projects for 2022",
+      "budget": 10000000,
+      "deadline": "2020-11-14",
+      "projects": [
+        {
+          "title": "New playground for kids",
+          "description": "Playground stuff",
+          "budget": 200000,
+          "votes": 200
+        },
+        {
+          "title": "Fix roads",
+          "description": "Roaddsssss",
+          "budget": 1500000,
+          "votes": 1267
+        }
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "lat": "45.752609968816465",
+      "long": "21.239476055088446",
+      "votes": 42,
+      "description": "Big pothole",
+      "images": [
+        { "url": "https://www.bing.com/th?id=OIP.ftL1x_GomJfi7RXsOgz5VAAAAA" }
+      ],
+      "reportedAt": "2020-10-10T10:20:20Z",
+      "isResolved": false,
+      "resovedAt": null,
+      "comment": null
+    },
+    {
+      "lat": "45.767229357373814",
+      "long": "21.25051877108501",
+      "votes": 10,
+      "description": "Fallen lamp post",
+      "images": [
+        {
+          "url": "http://2.bp.blogspot.com/-1vNRx1B1uyY/UTbPtT3oiCI/AAAAAAAAGLY/3h_R4_i1NjA/s1600/Fallen+lamp+post+Ridgepointe+030513+Photo+by+Ken+Carr+%25281%2529.JPG"
+        }
+      ],
+      "reportedAt": "2020-10-10T10:20:20Z",
+      "isResolved": true,
+      "resovedAt": "2020-11-20T15:31:42Z",
+      "comment": "It was not needed anyways"
+    }
+  ]
+}

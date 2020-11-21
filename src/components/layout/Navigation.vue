@@ -3,9 +3,9 @@ import { defineComponent, ref } from 'vue'
 import NavigationMobile from './NavigationMobile.vue'
 
 const links = ref([
-  { label: 'Hartă', path: '/' },
-  { label: 'Raportări', path: '/reports' },
-  { label: 'Proiecte Publice', path: '/projects' },
+  { label: 'Map', path: '/' },
+  { label: 'Reports', path: '/reports' },
+  { label: 'Funding Projects', path: '/projects' },
 ])
 
 export default defineComponent({
