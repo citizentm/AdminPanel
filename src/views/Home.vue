@@ -27,7 +27,12 @@ export default defineComponent({
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore
           .addTo(map.value)
-          .bindPopup(`${report.description} <br/>👍 ${report.votes}`)
+          .bindPopup(
+            `<img src="${report.images[0].url}" /><div class="p-3">${report.description} <br/>👍 ${report.votes}</div>`,
+            {
+              className: 'x-popup',
+            },
+          )
       })
     })
   },
@@ -40,4 +45,12 @@ export default defineComponent({
   </main>
 </template>
 
-<style lang="postcss"></style>
+<style lang="postcss">
+.x-popup {
+  .leaflet-popup-content {
+    margin: 0;
+    overflow: hidden;
+    @apply rounded-t-lg;
+  }
+}
+</style>
