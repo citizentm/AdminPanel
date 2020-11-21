@@ -7,13 +7,18 @@ export default {
 }
 
 export interface Report {
-  lat: string
-  long: string
+  id: number
+  latitude: number
+  longitude: number
   votes: number
   description: string
-  images: Record<'url', string>[]
-  reportedAt: Date
+  images: {
+    id: number
+    url: string
+  }[]
   isResolved: boolean
   resolvedAt?: Date
   comment?: string
+  created_at: Date
+  updated_at: Date
 }

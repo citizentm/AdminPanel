@@ -1,40 +1,54 @@
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import Map from '@/components/map/TheMap.vue'
+import ProblemDetailsPopup from '@/components/problems/ProblemDetailsPopup.vue'
+
 import { Report } from '@/store/reports'
-import { useStore } from 'vuex'
-import { useMap, redIcon } from '@/hooks/useMap'
+import { addMarker } from '@/hooks/useMap'
+import { useHttp } from '@/hooks/useHttp'
+
+// import { LeafletEvent } from 'leaflet'
 
 export default defineComponent({
   name: 'Home',
   components: {
     Map,
+    ProblemDetailsPopup,
   },
   setup() {
-    const store = useStore()
-    const { map, marker } = useMap()
+    const [, doGet] = useHttp('get')
 
-    const reports: Report[] = store.state.reports.list
+    const reports = ref<Report[]>([])
+    const selectedReport = ref<Report>()
 
-    onMounted(() => {
-      reports.forEach((report) => {
-        marker([+report.lat, +report.long], {
+    function addMarkers() {
+      reports.value.forEach((report) => {
+        addMarker({
+          lat: report.latitude,
+          long: report.longitude,
           title: report.description,
-          riseOnHover: true,
-          autoPan: true,
-          icon: redIcon,
+          callback: () => {
+            selectedReport.value = reports.value.find(
+              ({ id }) => id === report.id,
+            )
+          },
         })
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-          // @ts-ignore
-          .addTo(map.value)
-          .bindPopup(
-            `<img src="${report.images[0].url}" /><div class="p-3">${report.description} <br/>👍 ${report.votes}</div>`,
-            {
-              className: 'x-popup',
-            },
-          )
       })
+    }
+
+    onMounted(async () => {
+      try {
+        const response = await doGet('problems')
+        reports.value = await response.json()
+        addMarkers()
+      } catch (err) {
+        console.log(err)
+      }
     })
+
+    return {
+      selectedReport,
+    }
   },
 })
 </script>
@@ -42,15 +56,27 @@ export default defineComponent({
 <template>
   <main class="min-h-screen w-full">
     <Map />
+    <ProblemDetailsPopup v-if="selectedReport" :report="selectedReport" />
   </main>
 </template>
 
 <style lang="postcss">
 .x-popup {
+  @apply rounded-full;
+
   .leaflet-popup-content {
     margin: 0;
     overflow: hidden;
+    width: 10rem;
     @apply rounded-t-lg;
+  }
+
+  .leaflet-popup-content-wrapper {
+    @apply rounded-lg p-0 shadow-lg;
+  }
+
+  .leaflet-popup-close-button {
+    @apply hidden;
   }
 }
 </style>

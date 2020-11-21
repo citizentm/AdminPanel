@@ -1,4 +1,4 @@
-import L from 'leaflet'
+import L, { LeafletEvent } from 'leaflet'
 import { ref } from 'vue'
 
 const map = ref<L.Map>()
@@ -32,9 +32,21 @@ export function setupMap(elem: string): void {
   ).addTo(map.value)
 }
 
-export function useMap() {
-  return {
-    map,
-    marker: L.marker,
-  }
+export function addMarker(args: AddMarkerArgs) {
+  if (!map.value) return
+
+  return L.marker([args.lat, args.long], {
+    title: args.title,
+    autoPan: true,
+    icon: redIcon,
+  })
+    .addTo(map.value)
+    .addEventListener('click', args.callback)
+}
+
+interface AddMarkerArgs {
+  lat: number
+  long: number
+  title: string
+  callback: (event: LeafletEvent) => void
 }
