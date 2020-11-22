@@ -1,2 +1,2 @@
-/api/*    https://citizentm.arpadgabor.com/:splat    200
+/api/*    https://citizentm.arpadgabor.com/:splat
 /*    /index.html   200
