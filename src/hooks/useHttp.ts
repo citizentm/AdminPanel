@@ -5,7 +5,7 @@ import { getJWT } from './useJWT'
 type methods = 'get' | 'put' | 'post' | 'patch' | 'delete'
 
 const http = ky.create({
-  prefixUrl: '/api',
+  prefixUrl: 'https://citizentm.arpadgabor.com',
   hooks: {
     beforeRequest: [
       (request) => {
