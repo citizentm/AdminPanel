@@ -2,15 +2,33 @@
 import { defineComponent } from 'vue'
 import { Card, Heading, PushButton } from '@/components/ui'
 import { formatDistanceToNow } from 'date-fns'
+import { useHttp } from '@/hooks/useHttp'
 
 export default defineComponent({
   components: { Card, Heading, PushButton },
   props: {
     report: { type: Object, required: true },
   },
-  setup() {
+  emits: ['solved'],
+  setup(props, { emit }) {
+    const [, doPut] = useHttp('put')
+
+    async function markSolved() {
+      try {
+        await doPut(`problems/${props.report.id}`, {
+          json: {
+            isResolved: true,
+            resolvedAt: new Date(),
+          },
+        })
+        emit('solved', props.report.id)
+      } catch (err) {
+        console.log(err)
+      }
+    }
     return {
       formatDistanceToNow,
+      markSolved,
     }
   },
 })
@@ -48,7 +66,12 @@ export default defineComponent({
           <p class="mb-8">
             {{ report.description }}
           </p>
-          <PushButton type="button" variant="primary" label="Mark as solved" />
+          <PushButton
+            type="button"
+            variant="primary"
+            label="Mark as solved"
+            @click="markSolved"
+          />
         </div>
       </Card>
     </div>

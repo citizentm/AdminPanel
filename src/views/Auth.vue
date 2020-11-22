@@ -1,9 +1,11 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { Card, Heading, FieldText, PushButton } from '@/components/ui'
 import { useField, useForm } from 'vee-validate'
 import { string } from 'yup'
 import { useRouter } from 'vue-router'
+import { useHttp } from '@/hooks/useHttp'
+import { setJWT, getJWT } from '@/hooks/useJWT'
 
 export default defineComponent({
   name: 'Auth',
@@ -11,23 +13,45 @@ export default defineComponent({
   setup() {
     const { handleSubmit } = useForm()
     const { push } = useRouter()
+    const [reqState, login] = useHttp('post')
+    const errorMessage = ref()
 
-    const email = useField(
-      'email',
-      string()
-        .email()
-        .required(),
-    )
+    const email = useField('email', string().required())
     const password = useField('password', string().required())
 
-    const onSubmit = handleSubmit(() => {
-      push('/')
+    const onSubmit = handleSubmit(async () => {
+      try {
+        const response = await login('auth/local', {
+          json: {
+            identifier: email.value.value,
+            password: password.value.value,
+          },
+        })
+        const body = await response.json()
+        if (body.jwt) {
+          setJWT(body.jwt)
+          push('/')
+        }
+      } catch (err) {
+        if (err.response.statusCode >= 500) {
+          errorMessage.value = 'There was a server error.'
+        } else {
+          errorMessage.value = 'Credentials invalid.'
+        }
+        return
+      }
+    })
+
+    onMounted(() => {
+      if (getJWT()) push('/')
     })
 
     return {
       email,
       password,
       onSubmit,
+      reqState,
+      errorMessage,
     }
   },
 })
@@ -40,14 +64,24 @@ export default defineComponent({
 
       <form @submit.prevent="onSubmit" novalidate class="space-y-4">
         <FieldText required :field="email" id="email" label="Email" />
-        <FieldText required :field="password" id="password" label="Parolă" />
+        <FieldText
+          required
+          :field="password"
+          id="password"
+          label="Parolă"
+          type="password"
+        />
 
         <PushButton
           variant="primary"
           label="Autentificare"
           type="submit"
           class="w-full"
+          :disabled="reqState.pending"
         />
+        <div class="bg-red-100 mt-4 p-4 rounded-lg" v-if="errorMessage">
+          {{ errorMessage }}
+        </div>
       </form>
     </Card>
   </div>

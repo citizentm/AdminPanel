@@ -6,8 +6,14 @@ import ProblemDetailsPopup from '@/components/problems/ProblemDetailsPopup.vue'
 import { Report } from '@/store/reports'
 import { addMarker } from '@/hooks/useMap'
 import { useHttp } from '@/hooks/useHttp'
+import { Marker } from 'leaflet'
+import { useRoute, useRouter } from 'vue-router'
 
 // import { LeafletEvent } from 'leaflet'
+interface MarkerList {
+  reportId?: number
+  marker?: Marker
+}
 
 export default defineComponent({
   name: 'Home',
@@ -16,38 +22,63 @@ export default defineComponent({
     ProblemDetailsPopup,
   },
   setup() {
+    const route = useRoute()
+    const router = useRouter()
     const [, doGet] = useHttp('get')
 
+    const markers = ref<MarkerList[]>([])
     const reports = ref<Report[]>([])
     const selectedReport = ref<Report>()
 
     function addMarkers() {
       reports.value.forEach((report) => {
-        addMarker({
-          lat: report.latitude,
-          long: report.longitude,
-          title: report.description,
-          callback: () => {
-            selectedReport.value = reports.value.find(
-              ({ id }) => id === report.id,
-            )
-          },
+        markers.value.push({
+          reportId: report.id,
+          marker: addMarker({
+            lat: report.latitude,
+            long: report.longitude,
+            title: report.description,
+            callback: () => {
+              router.push({ query: { q: report.id } })
+              selectedReport.value = reports.value.find(
+                ({ id }) => id === report.id,
+              )
+            },
+          }),
         })
       })
     }
 
-    onMounted(async () => {
+    async function fetchProblems() {
       try {
-        const response = await doGet('problems')
+        const response = await doGet('problems?isResolved=false')
         reports.value = await response.json()
         addMarkers()
       } catch (err) {
         console.log(err)
       }
+    }
+
+    async function removeMarker(id: number) {
+      const marker = markers.value.find(({ reportId }) => reportId === id)
+      marker?.marker?.remove()
+      selectedReport.value = undefined
+      await fetchProblems()
+    }
+
+    onMounted(async () => {
+      await fetchProblems()
+
+      if (route.query.q) {
+        selectedReport.value = reports.value.find(
+          ({ id }) => `${id}` === `${route.query.q}`,
+        )
+      }
     })
 
     return {
       selectedReport,
+      removeMarker,
     }
   },
 })
@@ -56,7 +87,11 @@ export default defineComponent({
 <template>
   <main class="min-h-screen w-full">
     <Map />
-    <ProblemDetailsPopup v-if="selectedReport" :report="selectedReport" />
+    <ProblemDetailsPopup
+      v-if="selectedReport"
+      :report="selectedReport"
+      @solved="removeMarker"
+    />
   </main>
 </template>
 
