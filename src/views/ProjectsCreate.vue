@@ -98,8 +98,8 @@ export default defineComponent({
         <Heading h="2" class="mb-4">Details</Heading>
         <FieldText id="title" :field="projectTitle" label="Project Name" required />
         <FieldText id="description" :field="projectDescription" label="Description" required />
-        <FieldText id="budget" :field="projectBudget" label="Budget" required />
-        <FieldText id="deadline" :field="projectDeadline" label="Deadline" required />
+        <FieldText id="budget" :field="projectBudget" label="Budget" required type="number" />
+        <FieldText id="deadline" :field="projectDeadline" label="Deadline" required type="date" />
       </Card>
       <Card class="mt-4" v-for="(initiative, i) of newProject.initiatives" :key="i">
         <InitiativeForm :initiative="initiative" :i="i" />

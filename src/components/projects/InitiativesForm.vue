@@ -39,6 +39,12 @@ export default defineComponent({
   <div class="flex flex-col p-4 border border-gray-200">
     <FieldText :id="`title-${i}`" :field="initiativeTitle" label="Initiative Name" required />
     <FieldText :id="`description-${i}`" :field="initiativeDescr" label="Description" required />
-    <FieldText :id="`budget-${i}`" :field="initiativeBudget" label="Budget" required />
+    <FieldText
+      :id="`budget-${i}`"
+      :field="initiativeBudget"
+      label="Budget"
+      required
+      type="number"
+    />
   </div>
 </template>
