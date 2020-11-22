@@ -4,7 +4,7 @@ import Map from '@/components/map/TheMap.vue'
 import ProblemDetailsPopup from '@/components/problems/ProblemDetailsPopup.vue'
 
 import { Report } from '@/store/reports'
-import { addMarker } from '@/hooks/useMap'
+import { addMarker, zoomTo } from '@/hooks/useMap'
 import { useHttp } from '@/hooks/useHttp'
 import { Marker } from 'leaflet'
 import { useRoute, useRouter } from 'vue-router'
@@ -43,6 +43,12 @@ export default defineComponent({
               selectedReport.value = reports.value.find(
                 ({ id }) => id === report.id,
               )
+              if (selectedReport.value) {
+                zoomTo(
+                  selectedReport.value?.latitude,
+                  selectedReport.value?.longitude,
+                )
+              }
             },
           }),
         })
@@ -59,10 +65,14 @@ export default defineComponent({
       }
     }
 
+    function closePopup() {
+      selectedReport.value = undefined
+      router.push({ query: undefined })
+    }
     async function removeMarker(id: number) {
       const marker = markers.value.find(({ reportId }) => reportId === id)
       marker?.marker?.remove()
-      selectedReport.value = undefined
+      closePopup()
       await fetchProblems()
     }
 
@@ -73,12 +83,19 @@ export default defineComponent({
         selectedReport.value = reports.value.find(
           ({ id }) => `${id}` === `${route.query.q}`,
         )
+        if (selectedReport.value) {
+          zoomTo(
+            selectedReport.value?.latitude,
+            selectedReport.value?.longitude,
+          )
+        }
       }
     })
 
     return {
       selectedReport,
       removeMarker,
+      closePopup,
     }
   },
 })
@@ -91,6 +108,7 @@ export default defineComponent({
       v-if="selectedReport"
       :report="selectedReport"
       @solved="removeMarker"
+      @close="closePopup"
     />
   </main>
 </template>

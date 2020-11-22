@@ -44,6 +44,15 @@ export function addMarker(args: AddMarkerArgs) {
     .addEventListener('click', args.callback)
 }
 
+export function zoomTo(lat: number, long: number) {
+  if (!map.value) return
+
+  map.value.setView([lat, long], 15, {
+    duration: 5000,
+    easeLinearity: 10,
+  })
+}
+
 interface AddMarkerArgs {
   lat: number
   long: number

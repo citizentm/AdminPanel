@@ -9,7 +9,7 @@ export default defineComponent({
   props: {
     report: { type: Object, required: true },
   },
-  emits: ['solved'],
+  emits: ['solved', 'close'],
   setup(props, { emit }) {
     const [, doPut] = useHttp('put')
 
@@ -29,6 +29,7 @@ export default defineComponent({
     return {
       formatDistanceToNow,
       markSolved,
+      emit,
     }
   },
 })
@@ -71,6 +72,13 @@ export default defineComponent({
             variant="primary"
             label="Mark as solved"
             @click="markSolved"
+          />
+          <PushButton
+            type="button"
+            variant="light"
+            label="Close"
+            @click="emit('close')"
+            class="ml-4"
           />
         </div>
       </Card>

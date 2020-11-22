@@ -22,7 +22,7 @@ export default defineComponent({
 
     onMounted(async () => {
       try {
-        const response = await fetchReports('problems')
+        const response = await fetchReports('problems?_sort=created_at:DESC')
         state.reports = await response.json()
       } catch (err) {
         console.log(err.reponse)
