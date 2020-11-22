@@ -3,7 +3,7 @@ import { computed, defineComponent, ref } from 'vue'
 // import { object, Ref } from 'yup'
 
 const validator = (value: string) =>
-  ['text', 'email', 'password', 'tel'].includes(value)
+  ['text', 'email', 'password', 'tel', 'date', 'number'].includes(value)
 
 export default defineComponent({
   props: {
@@ -39,10 +39,7 @@ export default defineComponent({
     <div
       class="h-12 flex flex-row items-center rounded border border-gray-200 focus-within:ring ring-green-500 transition"
     >
-      <div
-        v-if="prepend"
-        class="border-r border-gray-200 h-full px-2 flex items-center"
-      >
+      <div v-if="prepend" class="border-r border-gray-200 h-full px-2 flex items-center">
         <slot name="prepend" />
       </div>
       <input
@@ -54,18 +51,12 @@ export default defineComponent({
         :placeholder="placeholder"
         class="px-3 h-full w-full focus:outline-none"
       />
-      <div
-        v-if="append"
-        class="border-l border-gray-200 h-full px-2 flex items-center"
-      >
+      <div v-if="append" class="border-l border-gray-200 h-full px-2 flex items-center">
         <slot name="append" />
       </div>
     </div>
     <div class="h-4">
-      <p
-        role="alert"
-        :class="[`text-red-500 text-sm`, { hidden: !field.errorMessage.value }]"
-      >
+      <p role="alert" :class="[`text-red-500 text-sm`, { hidden: !field.errorMessage.value }]">
         {{ field.errorMessage.value }}
       </p>
     </div>

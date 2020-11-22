@@ -22,6 +22,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { layout: 'default' },
   },
   {
+    path: '/projects/create',
+    name: 'ProjectsCreate',
+    component: () => import('../views/ProjectsCreate.vue'),
+    meta: { layout: 'default' },
+  },
+  {
     path: '/auth',
     name: 'Auth',
     component: () => import('../views/Auth.vue'),

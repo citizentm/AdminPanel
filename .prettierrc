@@ -3,5 +3,6 @@
   "semi": false,
   "arrowParens": "always",
   "htmlWhitespaceSensitivity": "css",
-  "singleQuote": true
+  "singleQuote": true,
+  "printWidth": 100
 }
