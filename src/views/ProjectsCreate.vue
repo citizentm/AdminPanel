@@ -5,6 +5,7 @@ import { defineComponent, ref } from 'vue'
 import { string, number, date } from 'yup'
 import { Heading, FieldText, Card, PushButton } from '@/components/ui'
 import InitiativeForm from '@/components/projects/InitiativesForm.vue'
+import { useRouter } from 'vue-router'
 
 interface Project {
   title: string
@@ -28,6 +29,7 @@ export default defineComponent({
     InitiativeForm,
   },
   setup() {
+    const router = useRouter()
     const newProject = ref<Project>({
       title: '',
       description: '',
@@ -42,23 +44,23 @@ export default defineComponent({
         },
       ],
     })
-    const [, createProject] = useHttp('post')
+    const [, doPost] = useHttp('post')
 
     const { handleSubmit } = useForm()
     const projectTitle = useField(
-      'projectTitle',
+      'title',
       string()
         .max(255)
         .required(),
     )
-    const projectDescription = useField('projectDescription', string().required())
+    const projectDescription = useField('description', string().required())
     const projectBudget = useField(
-      'projectBudget',
+      'budget',
       number()
         .min(0)
         .required(),
     )
-    const projectDeadline = useField('projectDeadline', date().required())
+    const projectDeadline = useField('deadline', date().required())
 
     function addInitiative() {
       newProject.value?.initiatives.push({
@@ -71,7 +73,27 @@ export default defineComponent({
 
     const onSubmit = handleSubmit(async (e) => {
       try {
-        console.log(e)
+        const response = await doPost('projects', {
+          json: {
+            title: e.title,
+            description: e.description,
+            budget: e.budget,
+            deadline: e.deadline,
+          },
+        })
+        const project = await response.json()
+
+        e.initiatives.forEach(async (initiative: any) => {
+          await doPost('initiatives', {
+            json: {
+              ...initiative,
+              project: project.id,
+            },
+          })
+        })
+        setTimeout(() => {
+          router.push('/projects')
+        }, 200)
       } catch (err) {
         console.log(err)
       }
