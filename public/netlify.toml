@@ -1,6 +1,0 @@
-[[redirects]]
-  from = "/api"
-  to = "https://citizentm.arpadgabor.com/:splat"
-  status = 200
-  force = true
-  headers = {X-From = "Netlify"}
