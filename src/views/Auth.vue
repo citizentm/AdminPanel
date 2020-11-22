@@ -60,21 +60,15 @@ export default defineComponent({
 <template>
   <div class="flex min-h-screen items-center justify-center">
     <Card class="w-96 p-8">
-      <Heading h="1" class="text-green-500 mb-4">Autentificare</Heading>
+      <Heading h="1" class="text-green-500 mb-4">Authenticate</Heading>
 
       <form @submit.prevent="onSubmit" novalidate class="space-y-4">
-        <FieldText required :field="email" id="email" label="Email" />
-        <FieldText
-          required
-          :field="password"
-          id="password"
-          label="Parolă"
-          type="password"
-        />
+        <FieldText required :field="email" id="email" label="Username" />
+        <FieldText required :field="password" id="password" label="Password" type="password" />
 
         <PushButton
           variant="primary"
-          label="Autentificare"
+          label="Enter"
           type="submit"
           class="w-full"
           :disabled="reqState.pending"

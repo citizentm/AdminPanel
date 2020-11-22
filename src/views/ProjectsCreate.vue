@@ -69,9 +69,9 @@ export default defineComponent({
       })
     }
 
-    const onSubmit = handleSubmit(async () => {
+    const onSubmit = handleSubmit(async (e) => {
       try {
-        console.log(newProject.value)
+        console.log(e)
       } catch (err) {
         console.log(err)
       }
