@@ -11,7 +11,7 @@ export const redIcon = L.icon({
 })
 
 const token =
-  'pk.eyJ1IjoiYXJwYWRnYWJvciIsImEiOiJja2hxenFzM2QweWZpMzBwNTBqdDRxMDI4In0.svvpn71wbZmLj_n92s4_UA'
+  'pk.eyJ1IjoiYXJwYWRnYWJvciIsImEiOiJja3NyNzc1cWEwanNpMnZvMzVrYXBkamJsIn0.Ef5rl-zWb6jcJjKQcT4xrw'
 
 export function setupMap(elem: string): void {
   map.value = L.map(elem, {
